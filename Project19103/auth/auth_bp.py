@@ -1,6 +1,6 @@
-from forms.models import db, User
+from models import db, User
 from flask import render_template, request, redirect, url_for, flash, session, Blueprint
-from forms.models import db, User  # Import the User model
+from models import db, User  # Import the User model
 
 auth = Blueprint('auth', __name__)
 

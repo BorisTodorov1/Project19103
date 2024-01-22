@@ -1,7 +1,7 @@
 from flask import session, render_template
 from dashboard.control_bp import control_bp
 from dashboard.customer_bp import customer_bp
-from forms.models import User, create_app
+from models import User, create_app
 from auth.auth_bp import auth
 
 app = create_app()

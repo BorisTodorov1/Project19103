@@ -1,6 +1,6 @@
 from flask import Blueprint, abort, render_template, redirect, url_for, flash, session
 from forms.forms import AddProductForm, EditProductForm
-from forms.models import db, Product
+from models import db, Product
 from dashboard.customer_bp import place_order
 
 

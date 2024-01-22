@@ -1,5 +1,5 @@
 from flask import render_template, redirect, url_for, flash, session, Blueprint
-from forms.models import Product, Order, db
+from models import Product, Order, db
 
 customer_bp = Blueprint('customer_bp', __name__)
 
