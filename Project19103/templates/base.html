@@ -7,19 +7,7 @@
     <title>{% block title %}AutoHub{% endblock %}</title>
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="{{ url_for('main.home') }}">Home</a></li>
-            {% if 'user_id' in session %}
-                {% if User.query.get(session['user_id']).role == 'customer' %}
-                    {% include 'customer/dashboard.html' %}
-                {% elif User.query.get(session['user_id']).role == 'control' %}
-                    {% include 'control/dashboard.html' %}
-                {% endif %}
-                <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
-            {% endif %}
-        </ul>
-    </nav>
+    {% include 'navbar.html' %}
 
     <div>
         {% block content %}{% endblock %}

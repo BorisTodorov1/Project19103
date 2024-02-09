@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard</title>
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <h1>Welcome to Your Customer Dashboard</h1>
+    
+    {% if car_parts %}
+        <h2>Available Car Parts:</h2>
+        <ul>
+            {% for part in car_parts %}
+                <li>
+                    {{ part.name }} - {{ part.price }}
+                    <a href="{{ url_for('customer_bp.place_order', product_id=part.id) }}">Place Order</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No car parts available at the moment.</p>
+    {% endif %}
+</body>
+</html>

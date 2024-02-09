@@ -1,0 +1,41 @@
+<!-- add_product.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <!-- Add any necessary CSS styles or links here -->
+</head>
+<body>
+
+<h1>Add Product</h1>
+
+<!-- Add Product Form -->
+<form action="{{ url_for('control_bp.add_product') }}" method="POST" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    
+    <!-- Add form fields for product details -->
+    <div>
+        {{ form.name.label }} {{ form.name(size=20) }}
+    </div>
+    <div>
+        {{ form.description.label }} {{ form.description(cols=40, rows=5) }}
+    </div>
+    <div>
+        {{ form.price.label }} {{ form.price(size=10) }}
+    </div>
+    <div>
+        {{ form.quantity.label }} {{ form.quantity(size=5) }}
+    </div>
+    <div>
+        {{ form.image.label }} {{ form.image() }}
+    </div>
+    <div>
+        {{ form.submit() }}
+    </div>
+</form>
+
+</body>
+</html>

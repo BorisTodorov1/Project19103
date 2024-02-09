@@ -1,0 +1,23 @@
+<!-- navbar.html -->
+<nav>
+    <ul>
+        <li><a href="{{ url_for('home') }}">Home</a></li>
+        
+        {% if 'user_id' in session %}
+            {% set user_role = User.query.get(session['user_id']).role %}
+            
+            {% if user_role in ['Admin', 'Employee'] %}
+                <li><a href="{{ url_for('control_bp.control_dashboard') }}">Admin Dashboard</a></li>
+                <li><a href="{{ url_for('customer_bp.customer_dashboard') }}">Customer Dashboard</a></li>
+            {% endif %}
+            
+            {% if user_role == 'Customer' %}
+                <li><a href="{{ url_for('customer_bp.customer_dashboard') }}">Customer Dashboard</a></li>
+            {% endif %}
+            
+            <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+        {% else %}
+            <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+        {% endif %}
+    </ul>
+</nav>

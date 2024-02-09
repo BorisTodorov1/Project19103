@@ -1,6 +1,5 @@
 from models import db, User
 from flask import render_template, request, redirect, url_for, flash, session, Blueprint
-from models import db, User  # Import the User model
 
 auth = Blueprint('auth', __name__)
 
@@ -17,10 +16,10 @@ def login():
             session['user_id'] = user.id
             if user.role == 'Admin' or user.role == "Employee":
                 print("Admin login successful")
-                return redirect(url_for('control_dashboard'))
+                return redirect(url_for('control_bp.control_dashboard'))
             else:
                 print("Customer login successful")
-                return redirect(url_for('customer_dashboard'))
+                return redirect(url_for('customer_bp.customer_dashboard'))
         else:
             print("Invalid email or password")
             flash('Invalid email or password')
@@ -29,7 +28,6 @@ def login():
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
-    # Assuming User is the model for user information
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
@@ -47,3 +45,10 @@ def register():
         return redirect(url_for('auth.login'))
 
     return render_template('register.html')
+
+@auth.route('/logout')
+def logout():
+    # Clear the session, effectively logging the user out
+    session.clear()
+    flash('You have been logged out', 'success')
+    return redirect(url_for('home'))

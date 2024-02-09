@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Add your head content here -->
+</head>
+
+<body>
+    <h1>Process Order</h1>
+
+    {% if order %}
+        <p>Email: {{ order.user.email }}</p>
+        <p>Username: {{order.user.username}}</p>
+
+        {% if order.products %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in order.products %}
+                        <tr>
+                            <td>{{ product.name }}</td>
+                            <td>{{ order.ordered_quantity }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No products associated with this order</p>
+        {% endif %}
+
+        <p>Location: {{ order.deliver_location }}</p>
+        <p>Payment Method: {{ order.payment_method }}</p>
+        <p>Status: {{ order.status }}</p>
+        <p>Timestamp: {{ order.order_time }}</p>
+
+        <!-- Add improved logic for selecting delivery vehicle based on order quantity -->
+        {% if order.products and order.products|length > 0 %}
+            {% set total_quantity = order.products|map(attribute='quantity')|sum %}
+            {% if total_quantity > 10 %}
+                <p>Delivery Vehicle: Truck</p>
+            {% else %}
+                <p>Delivery Vehicle: Car</p>
+            {% endif %}
+        {% endif %}
+
+        {% if order.status != 'Processed' %}
+            <form method="post" action="{{ url_for('control_bp.process_order', order_id=order.id) }}">
+                <label for="delivery_status">Delivery Status:</label>
+                <select name="delivery_status" id="delivery_status">
+                    <option value="In Progress">In Progress</option>
+                    <option value="Out for Delivery">Out for Delivery</option>
+                    <option value="Delivered">Delivered</option>
+                </select>
+                <br>
+                <input type="submit" value="Update Delivery Status">
+            </form>
+        {% else %}
+            <p>This order has already been processed</p>
+        {% endif %}
+    {% else %}
+        <p>Order not found</p>
+    {% endif %}
+</body>
+
+</html>

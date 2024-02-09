@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Place Order</title>
+</head>
+
+<body>
+    <h1>Place an Order</h1>
+
+    <form method="POST" action="{{ url_for('customer_bp.place_order', product_id=product.id) }}">
+        {{ form.hidden_tag() }}
+
+        <label for="quantity">Quantity:</label>
+        {{ form.quantity() }}
+
+        <label for="location">Location:</label>
+        {{ form.location() }}
+
+        <label for="payment_method">Payment Method:</label>
+        {{ form.payment_method() }}
+
+        {{ form.csrf_token }}
+
+        <button type="submit">Place Order</button>
+    </form>
+
+    {% if form.errors %}
+    <div class="errors">
+        {% for field, errors in form.errors.items() %}
+        {% for error in errors %}
+        <p>{{ error }}</p>
+        {% endfor %}
+        {% endfor %}
+    </div>
+    {% endif %}
+</body>
+
+</html>

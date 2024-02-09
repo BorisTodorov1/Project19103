@@ -1,6 +1,7 @@
+# models.py
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Enum
+from sqlalchemy import Enum, inspect
 
 db = SQLAlchemy()
 
@@ -12,6 +13,17 @@ def create_app():
 
     db.init_app(app)
 
+    with app.app_context():
+        inspector = inspect(db.engine)
+        try:
+            tables_exist = all(inspector.has_table(table_name) for table_name in ['category', 'order', 'order_products', 'product', 'user'])
+        except Exception as e:
+            print(f"An error occurred while checking table existence: {e}")
+            tables_exist = False
+
+        if not tables_exist:
+            db.create_all()
+
     return app
 
 class User(db.Model):
@@ -19,18 +31,26 @@ class User(db.Model):
     username = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.String(30), nullable=False)
     email = db.Column(db.String(100))
-    role = db.Column(Enum('Customer', 'Admin', 'Employee', 'Courier', name='roles'), nullable=False)  # Use name parameter for Enum
+    role = db.Column(Enum('Customer', 'Admin', 'Employee', 'Courier', name='roles'), nullable=False)
     current_order_id = db.Column(db.Integer)
     orders = db.relationship('Order', backref='user', lazy=True)
 
+
+
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    order_number = db.Column(db.String(30), nullable=False, unique=True)
+    order_number = db.Column(db.Integer, nullable=False, unique=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     order_time = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp(), nullable=False)
+    ordered_quantity = db.Column(db.Integer, nullable=False)
+    deliver_location = db.Column(db.String(100), nullable=False)
+    payment_method = db.Column(db.String(20)) 
     delivery_time = db.Column(db.TIMESTAMP)
-    deliver_location = db.Column(db.String(100))
     products = db.relationship('Product', secondary='order_products', backref='orders')
+    status = db.Column(db.String(20))
+
+
+
 
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -51,5 +71,9 @@ order_products = db.Table('order_products',
     db.Column('product_id', db.Integer, db.ForeignKey('product.id'), primary_key=True)
 )
 
-# Run this only once to create tables in your database
-# db.create_all()
+
+if __name__ == "__main__":
+    # Access the tables_exist variable to resolve the Pylance issue
+    app = create_app()
+    print(app.tables_exist)
+    app.run()

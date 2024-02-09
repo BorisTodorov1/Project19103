@@ -1,0 +1,74 @@
+<!-- controlDashboard.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <!-- Add any necessary CSS styles or links here -->
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <h1>Admin Dashboard</h1>
+
+    <!-- Add Product Form -->
+    <form action="{{ url_for('control_bp.add_product') }}" method="POST">
+        <h2>Add Product</h2>
+        <!-- Add form fields for product details -->
+        <button type="submit">Add Product</button>
+    </form>
+
+    <!-- Product List -->
+    <h2>Product List</h2>
+    <ul>
+        {% for product in products %}
+            <li>
+                {{ product.name }} - {{ product.description }}
+                <a href="{{ url_for('control_bp.edit_product', product_id=product.id) }}">Edit</a>
+                <!-- Delete Product Form -->
+                <form action="{{ url_for('control_bp.delete_product', product_id=product.id) }}" method="GET" style="display:inline;">
+                    <button type="submit">Delete Product</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Edit Product Form -->
+    {% if products %}
+        <form action="{{ url_for('control_bp.edit_product', product_id=products[0].id) }}" method="POST">
+            <h2>Edit Product</h2>
+            <!-- Add form fields for editing product details -->
+            <button type="submit">Save Changes</button>
+        </form>
+    {% endif %}
+
+    <!-- Process Orders Section -->
+    <h2>Process Orders</h2>
+    <table>
+        <tr>
+            <th>Order ID</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        {% for order in orders %}
+            <tr>
+                <td>{{ order.id }}</td>
+                <td>{{ order.status }}</td>
+                <td>
+                    <a href="{{ url_for('control_bp.process_order', order_id=order.id) }}" class="btn btn-primary">New Order Window</a>
+                    <!-- Process Order Form -->
+                    <form action="{{ url_for('control_bp.process_order', order_id=order.id) }}" method="POST" style="display:inline;">
+                        <button type="submit">Process Order</button>
+                    </form>
+                    <!-- Delete Order Form -->
+                    <form action="{{ url_for('control_bp.delete_order', order_id=order.id) }}" method="POST" style="display:inline;">
+                        <button type="submit">Delete Order</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+</body>
+</html>
