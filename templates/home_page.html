@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{url_for('static',filename='css/output.css')}}" rel="stylesheet">
+    <title>Home</title>
+</head>
+<body>
+  <!-- templates/home.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<script>
+    // Move live data to the header
+    function updateLiveDataHeader() {
+        const clockAndDateHeaderElement = document.getElementById('clockAndDateHeader');
+
+        const now = new Date();
+        const options = { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true };
+        const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
+        const clockAndDate = `${now.toLocaleTimeString('en-US', options)} | ${now.toLocaleDateString('en-US', dateOptions)}`;
+        clockAndDateHeaderElement.textContent = clockAndDate;
+    }
+
+    // Update live data in the header every 1 second
+    setInterval(updateLiveDataHeader, 1000);
+
+    // Initial update
+    updateLiveDataHeader();
+</script>
+<header class="bg-blue-200 p-4">
+    <div class="container mx-auto flex justify-between items-center">
+        <!-- Logo (you can replace this with your actual logo) -->
+        <a href="#" class="text-white text-lg font-bold">AutoHub</a>
+
+        <!-- Live Data Section in the Header -->
+        <div id="liveDataHeader" class="text-white">
+            <h2 id="clockAndDateHeader" class="text-lg"></h2>
+        </div>
+    </div>
+</header>
+
+<div class="bg-white text-gray-800 p-8 min-h-screen">
+    <section class="mb-8">
+        <h1 class="text-4xl font-bold mb-4">Explore Car Parts Categories</h1>
+        <p class="text-lg mb-6">Discover a world of car parts for every need.</p>
+    
+        <!-- Container for all cards with id "cards" -->
+        <div id="cards" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    
+            <!-- Card 1: Complete Restoration -->
+            <div id="rebuilding" class="bg-white p-6 rounded-md shadow-md mb-4">
+                <img src="/static/images/engine.jpg" alt="Complete Restoration" class="rounded-md mb-4">
+                <div class="text-center">
+                    <h2 class="text-xl font-semibold mb-4">Complete Restoration</h2>
+                    <p class="text-gray-600">Restore your car to its former glory with our complete restoration products.</p>
+                </div>
+            </div>
+    
+            <!-- Card 2: Maintenance -->
+            <div id="maintenance" class="bg-white p-6 rounded-md shadow-md mb-4">
+                <div class="text-center">
+                    <h2 class="text-xl font-semibold mb-4">Maintenance</h2>
+                    <p class="text-gray-600">Keep your car in top condition with our top-quality maintenance products.</p>
+                </div>
+                <img src="/static/images/maintance.jpg" alt="Maintenance" class="rounded-md mt-4">
+            </div>
+    
+            <!-- Card 3: Upgrades -->
+            <div id="upgrades" class="bg-white p-6 rounded-md shadow-md mb-4">
+                <img src="/static/images/turbo.jpg" alt="Upgrades" class="rounded-md mb-4">
+                <div class="text-center">
+                    <h2 class="text-xl font-semibold mb-4">Upgrades</h2>
+                    <p class="text-gray-600">Boost your car's performance with our cutting-edge upgrade solutions.</p>
+                </div>
+            </div>
+    
+        </div>
+    </section>
+    
+
+    
+
+    <!-- Live Data Section (Positioned at the bottom) -->
+    <div id="liveData" class="mb-8">
+        <!-- Existing live data section remains unchanged -->
+    </div>
+
+
+    <!-- Sample Content Cards on Home Page -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- DIY Restoration Card -->
+        <div class="bg-white p-4 rounded-lg shadow">
+            <h2 class="text-xl font-semibold mb-2">DIY Vehicle Restoration</h2>
+            <img src="/static/images/restoration.jpg" alt="DIY Restoration" class="mb-2 rounded-lg">
+            <p class="text-gray-700">Explore DIY restoration tips and projects on our YouTube channel.</p>
+            <a href="https://www.youtube.com/@yorkshirecarrestoration" class="text-blue-500 hover:underline">Watch Now</a>
+        </div>
+    
+        <!-- Maintenance Card -->
+        <div class="bg-white p-4 rounded-lg shadow">
+            <h2 class="text-xl font-semibold mb-2">Vehicle Maintenance Tutorials</h2>
+            <img src="/static/images/maint.jpg" alt="Maintenance Tutorials" class="mb-2 rounded-lg">
+            <p class="text-gray-700">Learn essential vehicle maintenance techniques from Auto Repair Guys.</p>
+            <a href="https://www.youtube.com/@AutoRepairGuys" class="text-blue-500 hover:underline">Watch Now</a>
+        </div>
+    
+        <!-- Automotive News Card -->
+        <div class="bg-white p-4 rounded-lg shadow">
+            <h2 class="text-xl font-semibold mb-2">Latest Automotive News</h2>
+            <img src="/static/images/news.jpg" alt="Automotive News" class="mb-2 rounded-lg">
+            <p class="text-gray-700">Stay updated with the latest automotive news and trends on Car Throttle.</p>
+            <a href="https://www.carthrottle.com/" class="text-blue-500 hover:underline">Read More</a>
+        </div>
+    </div>
+    
+    <footer class="text-white bg-gray-800 py-4">
+        <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
+            <div class="text-center md:text-left mb-4 md:mb-0">
+                <p class="mb-2 text-blue-200">Contact Us:</p>
+                <p>Email: <a href="mailto:info@autohub.com" class="text-blue-400 hover:text-blue-500">info@autohub.com</a></p>
+                <p>Phone: <a href="tel:+1234567890" class="text-blue-400 hover:text-blue-500">123-456-7890</a></p>
+            </div>
+            <div class="text-center md:text-right">
+                <p class="mb-2 text-blue-200">Follow Us:</p>
+                <div class="flex justify-center md:justify-end space-x-4">
+                    <!-- Replace the '#' with your actual social media links -->
+                    <a href="#" target="_blank" class="text-blue-400 hover:text-blue-500">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="#" target="_blank" class="text-blue-400 hover:text-blue-500">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" target="_blank" class="text-blue-400 hover:text-blue-500">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    
+</div>
+
+
+    </script>
+{% endblock %}
+
+</body>
+</html>

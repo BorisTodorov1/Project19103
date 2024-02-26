@@ -1,0 +1,61 @@
+<!-- customerDashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="{{ url_for('static', filename='css/output.css') }}" rel="stylesheet">
+    <!-- ... (head section) ... -->
+</head>
+<body class="bg-gray-100">
+    {% include 'navbar.html' %}
+    <div class="container mx-auto mt-8 flex">
+
+        <div class="w-1/4 mr-8">
+            <h2 class="text-xl font-semibold mb-4">Categories</h2>
+            <ul class="list-none">
+                {% for category in categories %}
+                    <li class="mb-2">
+                        <a href="#{{ category.name }}" class="text-blue-500 hover:underline">{{ category.name }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="w-3/4">
+            <h1 class="text-3xl font-semibold mb-6">Welcome to Your Customer Dashboard</h1>
+
+            {% if categories %}
+                {% for category in categories %}
+                    <div id="{{ category.name }}" class="mb-8">
+                        <h2 class="text-2xl font-semibold">{{ category.name }}:</h2>
+
+                        {% if category.products %}
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
+                                {% for product in category.products %}
+                                    <div class="bg-white p-4 rounded-md shadow-md">
+                                        <h3 class="text-lg font-semibold mb-2">{{ product.name }}</h3>
+                                        {% if product.image %}
+                                        
+                                        <img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.name }} Image" class="mb-2 max-w-full h-auto">
+                                                {% else %}
+                                                 <!-- Provide a default image or alternative content -->
+                                                <p>No image available</p>
+                                        {% endif %}
+                                        <p class="text-gray-600 mb-2">{{ product.description }}</p>
+                                        <p class="text-blue-500">{{ product.price }} | Quantity: {{ product.quantity }}</p>
+                                        <a href="{{ url_for('customer_bp.place_order', product_id=product.id) }}" class="text-blue-500 hover:underline">Place Order</a>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p class="mt-4">No products available in this category at the moment.</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No categories available at the moment.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

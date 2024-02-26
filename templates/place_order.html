@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <link href="{{ url_for('static', filename='css/output.css') }}" rel="stylesheet">
+    <title>Place Order</title>
+</head>
+
+<body class="bg-gray-100 p-8">
+    <h1 class="text-3xl font-bold mb-4">Place an Order</h1>
+
+    <form method="POST" action="{{ url_for('customer_bp.place_order', product_id=product.id) }}" class="mb-8">
+        {{ form.hidden_tag() }}
+
+        <div class="mb-4">
+            <label for="quantity" class="block mb-2">Quantity:</label>
+            {{ form.quantity(class="border border-gray-300 rounded py-2 px-4 w-full") }}
+        </div>
+
+        <div class="mb-4">
+            <label for="location" class="block mb-2">Location:</label>
+            {{ form.location(class="border border-gray-300 rounded py-2 px-4 w-full") }}
+        </div>
+
+        <div class="mb-4">
+            <label for="payment_method" class="block mb-2">Payment Method:</label>
+            {{ form.payment_method(class="border border-gray-300 rounded py-2 px-4 w-full") }}
+        </div>
+
+        <button type="submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded">Place Order</button>
+    </form>
+
+    {% if form.errors %}
+    <div class="errors">
+        {% for field, errors in form.errors.items() %}
+        {% for error in errors %}
+        <p class="text-red-500">{{ error }}</p>
+        {% endfor %}
+        {% endfor %}
+    </div>
+    {% endif %}
+</body>
+
+</html>

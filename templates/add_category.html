@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Category</title>
+    <link href="{{ url_for('static', filename='css/output.css') }}" rel="stylesheet">
+    <!-- Add Tailwind CSS link -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 h-screen flex items-center justify-center">
+
+<div class="bg-white p-8 rounded shadow-md w-96">
+    <h1 class="text-3xl font-semibold mb-4 text-center">Add Category</h1>
+
+    <form action="{{ url_for('control_bp.add_category') }}" method="POST" class="space-y-4">
+        {{ form.hidden_tag() }}
+        <div>
+            <label for="name" class="block">Category Name:</label>
+            {{ form.name(size=20, class="w-full border rounded py-2 px-3") }}
+        </div>
+        <div>
+            <label for="definition" class="block">Category Definition:</label>
+            {{ form.definition(size=20, class="w-full border rounded py-2 px-3") }}
+        </div>
+        <div class="text-center">
+            {{ form.submit(class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded") }}
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

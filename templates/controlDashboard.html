@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <!-- Use local Tailwind CSS file -->
+    <link href="{{ url_for('static', filename='css/output.css') }}" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100">
+
+    {% include 'navbar.html' %}
+
+    <div class="container mx-auto mt-8 flex">
+
+      <!-- Admin Sidebar -->
+      <div class="w-1/4 mr-8">
+        <h2 class="text-xl font-semibold mb-4">Admin Actions</h2>
+        <ul class="list-none">
+            <li class="mb-2">
+                <a href="#products" class="text-blue-500 hover:underline">Products</a>
+            </li>
+            <li class="mb-2">
+                <a href="#categories" class="text-blue-500 hover:underline">Categories</a>
+            </li>
+            <li class="mb-2">
+                <a href="#orders" class="text-blue-500 hover:underline">Orders</a>
+            </li>
+        </ul>
+    </div>
+    
+        <!-- Main Content -->
+        <div class="w-3/4">
+            <!-- Product Actions Card -->
+            <div class="card-wrapper w-full mx-0.5 mb-4">
+                <div class="bg-white p-4 rounded-md shadow-md flex space-x-4">
+
+                    <!-- Add Product Form -->
+                    <div class="flex-1">
+                        <form action="{{ url_for('control_bp.add_product') }}" method="POST">
+                            <h2 class="mb-4 text-xl font-semibold text-blue-500">Add Product</h2>
+                            <!-- Add form fields for product details -->
+                            <button type="submit" class="bg-lime-600 shadow-xl rounded-md text-white mx-2 p-1">Add Product</button>
+                        </form>
+                    </div>
+
+                    <!-- Product List -->
+                    <div class="flex-1">
+                        <h2 class="mb-4 text-xl font-semibold text-blue-500">Product List</h2>
+                        <ul class="pl-6 list-none">
+                            {% for product in products %}
+                                <li class="text-lg mb-2">
+                                    {{ product.name }} - {{ product.description }}
+                                    <a href="{{ url_for('control_bp.edit_product', product_id=product.id) }}"
+                                        class="bg-cyan-600 shadow-xl rounded-md text-white mx-2 p-1">Edit</a>
+                                    <!-- Delete Product Form -->
+                                    <form action="{{ url_for('control_bp.delete_product', product_id=product.id) }}"
+                                        method="POST" class="inline">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <button type="submit" class="bg-rose-600 shadow-xl rounded-md text-white mx-1 p-0.5">Delete Product</button>
+                                    </form>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Category Actions Card -->
+            <div class="card-wrapper w-full mx-0.5 mb-4">
+                <div class="bg-white p-4 rounded-md shadow-md flex space-x-4">
+
+                    <!-- Add Category Form -->
+                    <div class="flex-1">
+                        <form action="{{ url_for('control_bp.add_category') }}" method="GET">
+                            <h2 class="mb-4 text-xl font-semibold text-green-500">Add Category</h2>
+                            <!-- Link to the Add Category page -->
+                            <button type="submit" class="bg-lime-600 shadow-xl rounded-md text-white mx-2 p-1">Add Category</button>
+                        </form>
+                    </div>
+
+                    <!-- Category List -->
+                    <div class="flex-1">
+                        <h2 class="mb-4 text-xl font-semibold text-green-500">Category List</h2>
+                        <ul class="pl-6 list-none">
+                            {% for category in categories %}
+                                <li class="text-lg mb-2">
+                                    {{ category.name }}
+                                    <!-- Delete Category Button -->
+                                    <form action="{{ url_for('control_bp.delete_category', category_id=category.id) }}"
+                                        method="POST" style="display:inline;">
+                                        <input type="hidden" name="category_id" value="{{ category.id }}">
+                                        <button type="submit" class="bg-rose-600 shadow-xl rounded-md text-white mx-2 p-1">Delete Category</button>
+                                    </form>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Orders Card -->
+            <div class="card-wrapper w-full mx-0.5 mb-4">
+                <div class="bg-white p-4 rounded-md shadow-md flex space-x-4">
+
+                    <!-- Process Orders Section -->
+                    <div class="flex-1">
+                        <h2 class="mb-4 text-xl font-semibold text-purple-500">Process Orders</h2>
+                        <table class="w-full">
+                            <tr>
+                                <th class="text-left">Order ID</th>
+                                <th class="text-left">Status</th>
+                                <th class="text-left">Action</th>
+                            </tr>
+                            {% for order in orders %}
+                                <tr>
+                                    <td class="py-2">{{ order.id }}</td>
+                                    <td class="py-2">{{ order.status }}</td>
+                                    <td class="py-2">
+                                        <a href="{{ url_for('control_bp.process_order', order_id=order.id) }}"
+                                            class="bg-cyan-600 shadow-xl rounded-md text-white mx-2 p-1">Open Order</a>
+                                        <form action="{{ url_for('control_bp.delete_order', order_id=order.id) }}"
+                                            method="POST" class="inline">
+                                            <button type="submit" class="bg-rose-600 shadow-xl rounded-md text-white mx-2 p-1">Delete Order</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+</html>

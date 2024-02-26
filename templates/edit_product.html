@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Product</title>
+    <!-- Add Tailwind CSS -->
+    <link href="{{ url_for('static', filename='css/output.css') }}" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100 p-8">
+
+    <h1 class="text-3xl font-bold mb-6 text-blue-500">Edit Product</h1>
+
+    <!-- Edit Product Form -->
+    <form action="{{ url_for('control_bp.edit_product', product_id=product.id) }}" method="POST"
+        class="max-w-md bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+
+        <!-- Add form fields for editing product details -->
+        {{ form.hidden_tag() }}
+        {{ form.csrf_token }}
+
+        <div class="mb-4">
+            <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Product Name:</label>
+            {{ form.name(class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline") }}
+        </div>
+
+        <div class="mb-4">
+            <label for="description" class="block text-gray-700 text-sm font-bold mb-2">Product Description:</label>
+            {{ form.description(class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline") }}
+        </div>
+
+        <div class="mb-4">
+            <label for="price" class="block text-gray-700 text-sm font-bold mb-2">Product Price:</label>
+            {{ form.price(class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline") }}
+        </div>
+
+        <div class="mb-6">
+            <label for="quantity" class="block text-gray-700 text-sm font-bold mb-2">Product Quantity:</label>
+            {{ form.quantity(class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline") }}
+        </div>
+
+        <button type="submit"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            Save Changes
+        </button>
+    </form>
+
+</body>
+
+</html>
