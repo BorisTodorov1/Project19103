@@ -1,20 +1,20 @@
-# models.py
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+
 from sqlalchemy import Enum, inspect
-import os
 
 db = SQLAlchemy()
 
+
 def create_app():
     app = Flask(__name__, template_folder='../templates', static_folder='../static')
-    app.config['SECRET_KEY'] = 'your_secret_key'
+    app.config['SECRET_KEY'] = 'your_secure_secret_key'
     app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:admin@localhost/autohub'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['UPLOAD_FOLDER'] = 'images'
 
-
     db.init_app(app)
+
 
     with app.app_context():
         inspector = inspect(db.engine)
@@ -32,11 +32,12 @@ def create_app():
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), nullable=False, unique=True)
-    password = db.Column(db.String(30), nullable=False)
+    password = db.Column(db.String(512), nullable=False)
     email = db.Column(db.String(100))
-    role = db.Column(Enum('Customer', 'Admin', 'Employee', 'Courier', name='roles'), nullable=False)
+    role = db.Column(Enum('Customer', 'Admin', 'Employee', 'Courier', name='roles', create_type=False), nullable=False)
     current_order_id = db.Column(db.Integer)
     orders = db.relationship('Order', backref='user', lazy=True)
+
 
 
 
