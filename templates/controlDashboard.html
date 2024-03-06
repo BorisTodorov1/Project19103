@@ -10,13 +10,13 @@
 </head>
 
 <body class="bg-gray-100">
-
+    <p>User Role: {{ user_role }}</p>
     {% include 'navbar.html' %}
 
     <div class="container mx-auto mt-8 flex">
 
       <!-- Admin Sidebar -->
-      <div class="w-1/4 mr-8">
+      <div class="w-1/4 mr-8 fixed left-0 h-screen overflow-y-auto z-50 p-4" id="fixed-sidebar">
         <h2 class="text-xl font-semibold mb-4">Admin Actions</h2>
         <ul class="list-none">
             <li class="mb-2">
@@ -28,9 +28,19 @@
             <li class="mb-2">
                 <a href="#orders" class="text-blue-500 hover:underline">Orders</a>
             </li>
+            <li class="mb-2">
+                <a href="#users" class="text-blue-500 hover:underline">Users</a>
+            </li>
         </ul>
     </div>
     
+    <script>
+        window.addEventListener('scroll', function () {
+            var sidebar = document.getElementById('fixed-sidebar');
+            sidebar.style.marginTop = window.pageYOffset + 'px';
+        });
+    </script>
+
         <!-- Main Content -->
         <div class="w-3/4">
             <!-- Product Actions Card -->
@@ -38,7 +48,7 @@
                 <div class="bg-white p-4 rounded-md shadow-md flex space-x-4">
 
                     <!-- Add Product Form -->
-                    <div class="flex-1">
+                    <div class="flex-1" id="products">
                         <form action="{{ url_for('control_bp.add_product') }}" method="POST">
                             <h2 class="mb-4 text-xl font-semibold text-blue-500">Add Product</h2>
                             <!-- Add form fields for product details -->
@@ -74,7 +84,7 @@
                 <div class="bg-white p-4 rounded-md shadow-md flex space-x-4">
 
                     <!-- Add Category Form -->
-                    <div class="flex-1">
+                    <div class="flex-1" id="categories">
                         <form action="{{ url_for('control_bp.add_category') }}" method="GET">
                             <h2 class="mb-4 text-xl font-semibold text-green-500">Add Category</h2>
                             <!-- Link to the Add Category page -->
@@ -108,7 +118,7 @@
                 <div class="bg-white p-4 rounded-md shadow-md flex space-x-4">
 
                     <!-- Process Orders Section -->
-                    <div class="flex-1">
+                    <div class="flex-1" id="orders">
                         <h2 class="mb-4 text-xl font-semibold text-purple-500">Process Orders</h2>
                         <table class="w-full">
                             <tr>
@@ -135,9 +145,63 @@
 
                 </div>
             </div>
-
+           <!-- View Users Section --> 
+           <div class="card-wrapper w-full mx-0.5 mb-4">
+            <div class="bg-white p-4 rounded-md shadow-md flex space-x-4">
+                <div class="flex-1" id="users">
+                    {% if session.get('user_role', '').lower() == 'admin' %}
+                        <h2 class="mb-4 text-xl font-semibold text-indigo-500">View Users</h2>
+                        <table class="w-full">
+                            <tr>
+                                <th class="text-left">User ID</th>
+                                <th class="text-left">Username</th>
+                                <th class="text-left">Role</th>
+                                <th class="text-left">Action</th>
+                            </tr>
+                            {% for user in users %}
+                                <tr>
+                                    <td class="py-2">{{ user.id }}</td>
+                                    <td class="py-2">{{ user.username }}</td>
+                                    <td class="py-2">{{ user.role }}</td>
+                                    <td class="py-2">
+                                        
+                                            <!-- Edit User Role Form -->
+                                            <form action="{{ url_for('control_bp.edit_user', user_id=user.id) }}" method="POST"
+                                                class="inline">
+                                               
+                                                <select name="new_role" id="new_role">
+                                                    <option value="Admin">Admin</option>
+                                                    <option value="Employee">Employee</option>
+                                                    <option value="Customer">Customer</option>
+                                                    <!-- Add more role options as needed -->
+                                                </select>
+                                                <button type="submit"
+                                                    class="bg-cyan-600 shadow-xl rounded-md text-white mx-2 p-1">Edit
+                                                    Role</button>
+                                            </form>
+                                            <!-- Delete User Form -->
+                                            <form action="{{ url_for('control_bp.delete_user', user_id=user.id) }}" method="POST"
+                                                class="inline">
+                                                <button type="submit"
+                                                    class="bg-rose-600 shadow-xl rounded-md text-white mx-2 p-1">Delete
+                                                    User</button>
+                                            </form>
+                                        
+                                            <!-- Display a message or take other actions for non-Admin users -->
+                                            
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    {% else %}
+                        <p class="text-red-500">You do not have permission to view this section.</p>
+                    {% endif %}
+                </div>
+            </div>
         </div>
-    </div>
+
+
+   
 
 </body>
 
